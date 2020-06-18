@@ -24,19 +24,19 @@ function Login() {
   const [logo] = useState(new Animated.ValueXY({x: 230, y: 220}))
 
   useEffect(() => {
-    keyboardDidShowListerner = Keyboard.addListener('keyboardDidShow', keyboardDidShow)
-    keyboardDidHideListerner = Keyboard.addListener('keyboardDidHide', keyboardDidHide)
+    const keyboardDidShowListerner = Keyboard.addListener('keyboardDidShow', keyboardDidShow)
+    const keyboardDidHideListerner = Keyboard.addListener('keyboardDidHide', keyboardDidHide)
   })
 
   function keyboardDidShow () {
     Animated.parallel([
       Animated.timing(logo.x, {
         toValue: 160,
-        duration: 100
+        duration: 300
       }),
       Animated.timing(logo.y, {
         toValue: 150,
-        duration: 100
+        duration: 300
       })
     ]).start()
   }
@@ -46,12 +46,12 @@ function Login() {
       Animated.timing(logo.x, {
         toValue: 230,
         duration: 100,
-        easing: Easing.in(Easing.linear)
+        easing: Easing.linear
       }),
       Animated.timing(logo.y, {
         toValue: 220,
         duration: 100,
-        easing: Easing.inOut(Easing.linear)
+        easing: Easing.linear
       })
     ]).start()
   }

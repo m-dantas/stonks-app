@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "stonks-app",
-    "slug": "stonks-app",
+    "name": "Stonks",
+    "slug": "stonks",
     "platforms": [
       "ios",
       "android",
@@ -24,7 +24,7 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": "",
+    "description": "Aplicativo desenvolvido com intuito de finalizar a matéria Projeto Integrado IV na Faculdade de Tecnologia de Ferraz de Vasconcelos.",
     "githubUrl": "https://github.com/m-dantas/stonks-app"
   }
 }

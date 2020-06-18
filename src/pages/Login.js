@@ -7,10 +7,17 @@ import {
   StyleSheet, 
   TextInput, 
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Animated,
   Keyboard,
   Easing
 } from 'react-native'
+
+const DismissKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss() }>
+    {children}
+  </TouchableWithoutFeedback>
+)
 
 function Login() {
 
@@ -50,51 +57,53 @@ function Login() {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.background}>
+   <DismissKeyboard>
+      <KeyboardAvoidingView style={styles.background}>
+        <View style={styles.containerLogo}>
+          <Animated.Image
+            style={{
+              width: logo.x,
+              height: logo.y
+            }}
+            source={require('../../assets/logo.png')}
+          />
+        </View>
 
-      <View style={styles.containerLogo}>
-        <Animated.Image
-          style={{
-            width: logo.x,
-            height: logo.y
-          }}
-          source={require('../../assets/splash.png')}
-        />
-      </View>
-      
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          placeholder="E-mail"
-          type="email"
-          autoCorrect={false}
-          onChangeText={() => {}}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Senha"
-          type="password"
-          onChangeText={() => {}}
-        />      
+        <View style={styles.container}>
+          <TextInput
+            style={styles.input}
+            placeholder="E-mail"
+            keyboardType="email-address"
+            textContentType="emailAddress"
+            autoCorrect={false}
+            onChangeText={() => {}}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Senha"
+            textContentType="password"
+            onChangeText={() => {}}
+          />      
 
-        <TouchableOpacity style={styles.btnSubmit}>
-          <Text>
-            Acessar
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.btnSubmit}>
+            <Text>
+              Acessar
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnForget}>
-          <Text style={styles.blueText}>
-            Esqueceu sua senha?
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.btnForget}>
+            <Text style={styles.blueText}>
+              Esqueceu sua senha?
+            </Text>
+          </TouchableOpacity>
 
-        <Text>Não tem uma conta? </Text>      
-        <TouchableOpacity style={styles.btnRegister}>
-          <Text style={styles.blueText}>Cadastre-se</Text>        
-        </TouchableOpacity>    
-      </View>
-    </KeyboardAvoidingView>
+          <Text>Não tem uma conta? </Text>      
+          <TouchableOpacity style={styles.btnRegister}>
+            <Text style={styles.blueText}>Cadastre-se</Text>        
+          </TouchableOpacity>    
+        </View>
+      </KeyboardAvoidingView>
+   </DismissKeyboard>
   )
 }
 
@@ -136,6 +145,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     display: 'flex',
     marginTop: 7,
+    marginBottom: 30,
     width: '90%'
   },
   blueText: {

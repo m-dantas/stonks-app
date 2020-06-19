@@ -1,7 +1,10 @@
+import React from 'react'
 import {
   createAppContainer,
 } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+
+import HeaderImage from './components/HeaderImage'
 
 import Login from './pages/login';
 import Register from './pages/register';
@@ -17,10 +20,10 @@ const Routes = createAppContainer(
     Register: {
       screen: Register,
       navigationOptions: {
-        headerTitle: 'Register',
+        headerTitle: ( <HeaderImage /> )
       },
     },
-  })
+  }, {headerLayoutPreset: 'center'})
 )
 
 export default Routes

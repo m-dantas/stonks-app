@@ -21,7 +21,7 @@ const DismissKeyboard = ({ children }) => (
   </TouchableWithoutFeedback>
 )
 
-export default function Login() {
+export default function Login({ navigation }) {
   const [logo] = useState(new Animated.ValueXY({ x: 160, y: 150 }))
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function Login() {
               width: logo.x,
               height: logo.y
             }}
-            source={require('../../../assets/logo.png')}
+            source={require('assets/logo.png')}
           />
         </View>
 
@@ -82,6 +82,7 @@ export default function Login() {
           <TextInput
             style={styles.input}
             placeholder="Senha"
+            secureTextEntry={true}
             textContentType="password"
             onChangeText={() => {}}
           />      
@@ -99,7 +100,10 @@ export default function Login() {
           </TouchableOpacity>
 
           <Text>Não tem uma conta? </Text>      
-          <TouchableOpacity style={styles.btnRegister}>
+          <TouchableOpacity 
+            style={styles.btnRegister}
+            onPress={() => navigation.navigate('Register')}
+          >
             <Text style={styles.blueText}>Cadastre-se</Text>        
           </TouchableOpacity>    
         </View>

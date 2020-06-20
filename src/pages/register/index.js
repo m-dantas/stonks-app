@@ -10,6 +10,7 @@ import {
   Keyboard
 } from 'react-native'
 
+import Usuario from '@services/api-usuarios'
 import styles from './styles'
 
 export default function Register() {
@@ -17,7 +18,7 @@ export default function Register() {
   const [nome, setNome] = useState('')
   const [sobrenome, setSobrenome] = useState('')
   const [email, setEmail] = useState('')
-  const [pass, setPass] = useState('')
+  const [password, setPassword] = useState('')
   const [confirmPass, setConfirmPass] = useState('')
   const [nomeEmpresa, setNomeEmpresa] = useState('')
   const [cnpj, setCNPJ] = useState('')
@@ -25,21 +26,35 @@ export default function Register() {
   async function handleSubmit() {
     try {
       if (nome && sobrenome &&
-        email && pass && confirmPass &&
+        email && password && confirmPass &&
         nomeEmpresa && cnpj
       ) {
-        if (pass != confirmPass) {
+        if (password != confirmPass) {
           alert('Senha não coecidem')
           setPass('')
           setConfirmPass('')
         } else {
-          alert('safe')
+          const body = {
+            nome,
+            sobrenome,
+            email,
+            password,
+            nomeEmpresa,
+            cnpj
+          }
+         await Usuario.post(body).then(res => {
+           alert(res.data.message)
+         }).catch(err => {
+          console.log('err 1', {
+            err
+          })
+         })
         }
       } else {
         alert('amigo ta faltando coisa ai')
       }
     } catch (err) {
-      
+      console.log('err 2', err)
     }
   }
 
@@ -73,8 +88,8 @@ export default function Register() {
               placeholder="Senha"
               secureTextEntry={true}
               textContentType="password"
-              value={pass}
-              onChangeText={setPass}
+              value={password}
+              onChangeText={setPassword}
               style={styles.input}
             />
             <TextInput

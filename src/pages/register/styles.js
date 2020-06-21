@@ -48,5 +48,5 @@ export default StyleSheet.create({
     height: 40,
     width: '90%',
     marginTop: 7
-  },
+  }
 })

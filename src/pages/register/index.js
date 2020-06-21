@@ -7,21 +7,27 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   KeyboardAvoidingView,
-  Keyboard
+  Keyboard,
+  Modal
 } from 'react-native'
+
+import CodeVerification from '@components/CodeVerification'
 
 import Usuario from '@services/api-usuarios'
 import styles from './styles'
 
-export default function Register() {
+export default function Register({ navigation }) {
 
-  const [nome, setNome] = useState('')
-  const [sobrenome, setSobrenome] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPass, setConfirmPass] = useState('')
-  const [nomeEmpresa, setNomeEmpresa] = useState('')
-  const [cnpj, setCNPJ] = useState('')
+  const [nome, setNome] = useState('Mauricio')
+  const [sobrenome, setSobrenome] = useState('Dantas')
+  const [email, setEmail] = useState('mauricio.dantascp@gmail.com')
+  const [password, setPassword] = useState('coxinha09')
+  const [confirmPass, setConfirmPass] = useState('coxinha09')
+  const [nomeEmpresa, setNomeEmpresa] = useState('Endeavor')
+  const [cnpj, setCNPJ] = useState('12345678')
+
+  const [message, setMessage] = useState('')
+  const [show, setShow] = useState(false)
 
   async function handleSubmit() {
     try {
@@ -31,10 +37,10 @@ export default function Register() {
       ) {
         if (password != confirmPass) {
           alert('Senha não coecidem')
-          setPass('')
+          setPassword('')
           setConfirmPass('')
         } else {
-          const body = {
+         const body = {
             nome,
             sobrenome,
             email,
@@ -43,12 +49,13 @@ export default function Register() {
             cnpj
           }
          await Usuario.post(body).then(res => {
-           alert(res.data.message)
+          setShow(true)
          }).catch(err => {
           console.log('err 1', {
             err
           })
          })
+         setShow(true)
         }
       } else {
         alert('amigo ta faltando coisa ai')
@@ -121,8 +128,11 @@ export default function Register() {
                 Finalizar cadastro.
               </Text>
             </TouchableOpacity>
-          </View>     
+          </View>
         </ScrollView>
+        <View>          
+          <CodeVerification show={show} navigation={navigation} />
+        </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   )

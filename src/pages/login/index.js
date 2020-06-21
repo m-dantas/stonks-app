@@ -13,6 +13,8 @@ import {
   Easing
 } from 'react-native'
 
+import Usuario from '@services/api-usuarios'
+
 import styles from './styles'
 
 const DismissKeyboard = ({ children }) => (
@@ -22,6 +24,10 @@ const DismissKeyboard = ({ children }) => (
 )
 
 export default function Login({ navigation }) {
+
+  const [email, setEmail] = useState('mauricio.dantascp@gmail.com')
+  const [password, setPassword] = useState('coxinha09')
+
   const [logo] = useState(new Animated.ValueXY({ x: 160, y: 150 }))
 
   useEffect(() => {
@@ -57,6 +63,22 @@ export default function Login({ navigation }) {
     ]).start()
   }
 
+  async function handleLogin () {
+    if (email && password) {
+      const body = {
+        email,
+        password
+      }
+
+      await Usuario.login(body)
+        .then(res => {
+          console.log(res)
+        }).catch(err => {
+          console.log(err)
+        })
+    }
+  }
+  
   return (
     <DismissKeyboard>
       <KeyboardAvoidingView style={styles.background}>
@@ -77,25 +99,21 @@ export default function Login({ navigation }) {
             keyboardType="email-address"
             textContentType="emailAddress"
             autoCorrect={false}
-            onChangeText={() => {}}
+            value={email}
+            onChangeText={setEmail}
           />
           <TextInput
             style={styles.input}
             placeholder="Senha"
             secureTextEntry={true}
             textContentType="password"
-            onChangeText={() => {}}
+            value={password}
+            onChangeText={setPassword}
           />      
 
-          <TouchableOpacity style={styles.btnSubmit}>
+          <TouchableOpacity style={styles.btnSubmit} onPress={handleLogin}>
             <Text>
               Acessar
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.btnForget}>
-            <Text style={styles.blueText}>
-              Esqueceu sua senha?
             </Text>
           </TouchableOpacity>
 

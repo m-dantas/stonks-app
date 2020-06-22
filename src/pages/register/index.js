@@ -12,9 +12,11 @@ import {
 } from 'react-native'
 
 import CodeVerification from '@components/CodeVerification'
+import CustomModal from '@components/CustomModal'
 
 import Usuario from '@services/api-usuarios'
 import styles from './styles'
+import { set } from 'react-native-reanimated'
 
 export default function Register({ navigation }) {
 
@@ -26,17 +28,21 @@ export default function Register({ navigation }) {
   const [nomeEmpresa, setNomeEmpresa] = useState('Endeavor')
   const [cnpj, setCNPJ] = useState('12345678')
 
-  const [message, setMessage] = useState('')
+  const [isValid, setIsValid] = useState({ valid: false, message: '', show: false })
   const [show, setShow] = useState(false)
 
-  async function handleSubmit() {
+  const handleSubmit = async () => {
     try {
       if (nome && sobrenome &&
         email && password && confirmPass &&
         nomeEmpresa && cnpj
       ) {
         if (password != confirmPass) {
-          alert('Senha não coecidem')
+          setIsValid({ 
+            error: true,
+            message: 'Senhas não coecidem',
+            show: true 
+          })
           setPassword('')
           setConfirmPass('')
         } else {
@@ -51,17 +57,44 @@ export default function Register({ navigation }) {
          await Usuario.post(body).then(res => {
           setShow(true)
          }).catch(err => {
-          console.log('err 1', {
-            err
-          })
+          throw new Error(err.response.data.msg)
          })
-         setShow(true)
         }
       } else {
-        alert('amigo ta faltando coisa ai')
+        setIsValid({ 
+          error: true,
+          message: 'Verifique se todos os campos estão preenchidos',
+          show: true 
+        })
       }
     } catch (err) {
-      console.log('err 2', err)
+      setIsValid({ 
+        error: true, 
+        message: err.message, 
+        show: true 
+      })
+    }
+  }
+
+  const closed = () => {
+    setIsValid({ 
+      error: false, 
+      message: '', 
+      show: false 
+    })
+  }
+
+  const ChoiceModal = () => {
+    if (!isValid.error && show) {
+      return (
+        <View>          
+          <CodeVerification show={show} navigation={navigation} />
+        </View>
+      )
+    } else if (isValid.error && isValid.show) {
+      return <CustomModal props={isValid} closed={() => closed()}/>
+    } else {
+      return false
     }
   }
 
@@ -123,16 +156,14 @@ export default function Register({ navigation }) {
               onChangeText={setCNPJ}
             />
 
-            <TouchableOpacity style={styles.btnSubmit} onPress={handleSubmit}>
+            <TouchableOpacity style={styles.btnSubmit} onPress={() => handleSubmit()}>
               <Text style={styles.textButton}>
                 Finalizar cadastro.
               </Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
-        <View>          
-          <CodeVerification show={show} navigation={navigation} />
-        </View>
+        <ChoiceModal />
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   )

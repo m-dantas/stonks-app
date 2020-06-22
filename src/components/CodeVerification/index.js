@@ -25,16 +25,15 @@ export default function CodeVerification({ show, navigation }) {
     setModalVisible(show)
   }, [show])
 
-  async function handleVerify () {
+  const handleVerify = () => {
     try {
       if (codeVerify.length === 4) {
         Keyboard.dismiss()
-        setChoiceButton(1)
         Usuarios.code({ codeVerify })
           .then(res => {
-            setChoiceButton(2)
+            setChoiceButton(1)
           }).catch(err => {
-            console.log(err)
+            throw new Error(err.response.data.msg)
           })
       } else {
         alert('Preencha com todos os digitos')
@@ -44,7 +43,7 @@ export default function CodeVerification({ show, navigation }) {
     }
   }
 
-  function RenderButton () {
+  const RenderButton = () => {
     if (choiceButton == 0) {
       return (
         <TouchableOpacity style={styles.confirmCode} onPress={handleVerify}>
@@ -61,7 +60,7 @@ export default function CodeVerification({ show, navigation }) {
           </Text>
         </TouchableOpacity>
       )
-    } else {
+    } else if (choiceButton == 2) {
       return (
         <TouchableOpacity
           style={styles.loginButton} 
@@ -71,6 +70,8 @@ export default function CodeVerification({ show, navigation }) {
           </Text>
        </TouchableOpacity>
       )
+    } else {
+      return
     }
   }
 
@@ -84,7 +85,13 @@ export default function CodeVerification({ show, navigation }) {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>            
             <Image source={require('@icons/key.png')} style={styles.key} />
-            <Text style={styles.modalText}>Insira seu código de verificação.</Text>
+            
+            <Text style={styles.modalText}>
+              Foi enviado um código de veficação para sua caixa de e-mail.              
+            </Text>
+            <Text style={styles.modalText}>
+              Verifique sua caixa de spam e lixeira.
+            </Text>
             <TextInput
               placeholder="CÓDIGO DE VERIFICAÇÃO"
               keyboardType="numeric"

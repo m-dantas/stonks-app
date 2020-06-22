@@ -8,6 +8,7 @@ import HeaderImage from './components/HeaderImage'
 
 import Login from './pages/login';
 import Register from './pages/register';
+import Home from './pages/home'
 
 const Routes = createAppContainer(
   createStackNavigator({
@@ -23,6 +24,12 @@ const Routes = createAppContainer(
         headerTitle: ( <HeaderImage /> )
       },
     },
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        headerTitle: 'Dashboard'
+      },
+    }
   }, {headerLayoutPreset: 'center'})
 )
 

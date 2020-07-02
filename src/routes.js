@@ -3,12 +3,22 @@ import {
   createAppContainer,
 } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import HeaderImage from './components/HeaderImage'
 
 import Login from './pages/login';
 import Register from './pages/register';
 import Home from './pages/home'
+
+function initialRoute () {
+  const auth = AsyncStorage.getItem('@AUTH')
+  if (auth) {
+    return 'Home'
+  } else {
+    return 'Login'
+  }
+}
 
 const Routes = createAppContainer(
   createStackNavigator({
@@ -17,6 +27,7 @@ const Routes = createAppContainer(
       navigationOptions: {
         header: null
       },
+      
     },
     Register: {
       screen: Register,
@@ -27,10 +38,15 @@ const Routes = createAppContainer(
     Home: {
       screen: Home,
       navigationOptions: {
-        headerTitle: 'Dashboard'
+        header: null
       },
     }
-  }, {headerLayoutPreset: 'center'})
-)
+  }, 
+  {
+    headerLayoutPreset: 'center',
+    initialRouteName: initialRoute(),
+    cardStyle: {backgroundColor: '#eaeef3'}
+  }
+))
 
 export default Routes

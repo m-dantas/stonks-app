@@ -16,7 +16,6 @@ import CustomModal from '@components/CustomModal'
 
 import Usuario from '@services/api-usuarios'
 import styles from './styles'
-import { set } from 'react-native-reanimated'
 
 export default function Register({ navigation }) {
 

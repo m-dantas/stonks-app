@@ -27,10 +27,7 @@ const DismissKeyboard = ({ children }) => (
 export default function Login({ navigation }) {
 
   const [email, setEmail] = useState('mauricio.dantascp@gmail.com')
-  const [password, setPassword] = useState('123456')
-  const [user, setUser] = useState({})
-  const [auth, setAuth] = useState({})
-
+  const [password, setPassword] = useState('coxinha09')
   const [logo] = useState(new Animated.ValueXY({ x: 160, y: 150 }))
   const [isValid, setIsValid] = useState({ error: false, message: '', show: false })
 
@@ -67,11 +64,16 @@ export default function Login({ navigation }) {
     ]).start()
   }
 
-  const saveAndNavigation = async () => {
+  const saveAndNavigation = async (auth, user) => {
     await AsyncStorage.setItem('@AUTH', JSON.stringify(auth))
     await AsyncStorage.setItem('@USUARIO', JSON.stringify(user))
 
-    navigation.navigate('Home')
+    const isAuth = await AsyncStorage.getItem('@AUTH')
+    const isUser = await AsyncStorage.getItem('@USUARIO')
+    
+    if (isAuth && isUser) {
+      navigation.navigate('Home')
+    }
   }
 
   const handleLogin = async () => {
@@ -81,15 +83,15 @@ export default function Login({ navigation }) {
           email,
           password
         }  
-        const user = await Usuario.login(body)
-
-        if (user) {
-          setAuth(user.data.auth)
-          setUser(user.data.usuario)
-          saveAndNavigation()
-        } else {
-          throw new Error(user)
-        }
+        await Usuario.login(body)
+          .then(res => {
+            if (res.status == 200) {
+              saveAndNavigation(res.data.auth, res.data.usuario)
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
       } else {
         setIsValid({ 
           error: true, 
@@ -154,7 +156,7 @@ export default function Login({ navigation }) {
             onChangeText={setPassword}
           />      
 
-          <TouchableOpacity style={styles.btnSubmit} onPress={handleLogin}>
+          <TouchableOpacity style={styles.btnSubmit} onPress={() => handleLogin()}>
             <Text>
               Acessar
             </Text>

@@ -32,6 +32,11 @@ export default function CodeVerification({ show, navigation }) {
         Usuarios.code({ codeVerify })
           .then(res => {
             setChoiceButton(1)
+            if (res.status === 200) {
+              setTimeout(() => {
+                setChoiceButton(2)
+              }, 1500);
+            }
           }).catch(err => {
             throw new Error(err.response.data.msg)
           })

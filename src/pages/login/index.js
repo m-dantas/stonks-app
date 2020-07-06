@@ -26,8 +26,8 @@ const DismissKeyboard = ({ children }) => (
 
 export default function Login({ navigation }) {
 
-  const [email, setEmail] = useState('mauricio.dantascp@gmail.com')
-  const [password, setPassword] = useState('coxinha09')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [logo] = useState(new Animated.ValueXY({ x: 160, y: 150 }))
   const [isValid, setIsValid] = useState({ error: false, message: '', show: false })
 

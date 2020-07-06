@@ -19,13 +19,13 @@ import styles from './styles'
 
 export default function Register({ navigation }) {
 
-  const [nome, setNome] = useState('Mauricio')
-  const [sobrenome, setSobrenome] = useState('Dantas')
-  const [email, setEmail] = useState('mauricio.dantascp@gmail.com')
-  const [password, setPassword] = useState('coxinha09')
-  const [confirmPass, setConfirmPass] = useState('coxinha09')
-  const [nomeEmpresa, setNomeEmpresa] = useState('Endeavor')
-  const [cnpj, setCNPJ] = useState('12345678')
+  const [nome, setNome] = useState('')
+  const [sobrenome, setSobrenome] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPass, setConfirmPass] = useState('')
+  const [nomeEmpresa, setNomeEmpresa] = useState('')
+  const [cnpj, setCNPJ] = useState('')
 
   const [isValid, setIsValid] = useState({ valid: false, message: '', show: false })
   const [show, setShow] = useState(false)
